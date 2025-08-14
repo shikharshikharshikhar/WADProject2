@@ -74,25 +74,29 @@ router.post('/:id/edit', requireAuth, async (req, res) => {
   try {
     console.log('Form data received:', req.body);
     
-    // Get the current contact first
-    const currentContact = await req.db.getContactById(req.params.id);
-    console.log('Current contact in DB:', currentContact);
+    // Helper function to extract first value if it's an array
+    const getValue = (field) => {
+      if (Array.isArray(field)) {
+        return field[0] || '';
+      }
+      return field || '';
+    };
     
     const contactData = {
-      first_name: req.body.first_name || currentContact.first_name || '',
-      last_name: req.body.last_name || currentContact.last_name || '',
-      phone_number: req.body.phone_number || currentContact.phone_number || '',
-      email_address: req.body.email_address || currentContact.email_address || '',
-      street: req.body.street || currentContact.street || '',
-      city: req.body.city || currentContact.city || '',
-      state: req.body.state || currentContact.state || '',
-      zip: req.body.zip || currentContact.zip || '',
-      country: req.body.country || currentContact.country || '',
+      first_name: getValue(req.body.first_name),
+      last_name: getValue(req.body.last_name),
+      phone_number: getValue(req.body.phone_number),
+      email_address: getValue(req.body.email_address),
+      street: getValue(req.body.street),
+      city: getValue(req.body.city),
+      state: getValue(req.body.state),
+      zip: getValue(req.body.zip),
+      country: getValue(req.body.country),
       contact_by_email: req.body.contact_by_email !== undefined,
       contact_by_phone: req.body.contact_by_phone !== undefined
     };
 
-    console.log('Data to update:', contactData);
+    console.log('Data to update (cleaned):', contactData);
     await req.db.updateContact(req.params.id, contactData);
     res.redirect(`/${req.params.id}`);
   } catch (error) {
