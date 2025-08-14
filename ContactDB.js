@@ -11,6 +11,8 @@ class ContactDB {
 
   async initialize() {
     // Create contacts table
+    console.log('Available methods:', Object.getOwnPropertyNames(this.db));
+    console.log('DB instance:', this.db);
     await this.db.exec(`
       CREATE TABLE IF NOT EXISTS contacts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
