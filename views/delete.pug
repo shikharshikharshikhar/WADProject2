@@ -18,7 +18,41 @@ block content
           .alert.alert-warning.text-start
             h5.alert-heading
               i.bi.bi-person-circle.me-2
-              | #{contactextends layout
+              | #{contact.first_name} #{contact.last_name}
+            
+            if contact.email_address
+              p.mb-1
+                i.bi.bi-envelope.me-2
+                strong Email: 
+                | #{contact.email_address}
+            
+            if contact.phone_number
+              p.mb-1
+                i.bi.bi-telephone.me-2
+                strong Phone: 
+                | #{contact.phone_number}
+            
+            if contact.city || contact.state
+              p.mb-0
+                i.bi.bi-geo-alt.me-2
+                strong Location: 
+                | #{contact.city}#{contact.state ? ', ' + contact.state : ''}
+          
+          .alert.alert-danger
+            i.bi.bi-exclamation-triangle.me-2
+            strong Warning: 
+            | This action cannot be undone!
+        
+        .card-footer.bg-light
+          .d-flex.gap-3.justify-content-center
+            a.btn.btn-outline-secondary.btn-lg(href=`/${contact.id}`)
+              i.bi.bi-x-circle.me-2
+              | Cancel
+            
+            form.d-inline(action=`/${contact.id}/delete`, method='post')
+              button.btn.btn-danger.btn-lg(type='submit')
+                i.bi.bi-trash.me-2
+                | Yes, Delete Contactextends layout
 
 block content
   h1 Delete Contact
