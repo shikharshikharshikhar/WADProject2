@@ -137,10 +137,7 @@ class ContactDB {
   }
 
   async updateContact(id, contact) {
-    console.log('Updating contact ID:', id);
-    console.log('Update data:', contact);
-    
-    const result = await this.runAsync(`
+    await this.runAsync(`
       UPDATE contacts SET
       first_name = ?, last_name = ?, phone_number = ?, email_address = ?,
       street = ?, city = ?, state = ?, zip = ?, country = ?,
@@ -160,9 +157,6 @@ class ContactDB {
       contact.contact_by_phone ? 1 : 0,
       id
     ]);
-    
-    console.log('Update result:', result);
-    return result;
   }
 
   async deleteContact(id) {
