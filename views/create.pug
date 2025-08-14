@@ -3,106 +3,60 @@ extends layout
 block content
   .row.justify-content-center
     .col-12.col-lg-8
-      .card.shadow
+      .card
         .card-header.bg-primary.text-white
-          h2.mb-0
-            i.bi.bi-person-plus.me-2
-            | Add New Contact
+          h2.mb-0 Add New Contact
         
-        .card-body.p-4
+        .card-body
           form(action='/create', method='post')
-            .row.g-3
-              .col-12.col-md-6
-                label.form-label(for='first_name')
-                  i.bi.bi-person.me-2
-                  | First Name *
-                input.form-control(type='text', id='first_name', name='first_name', required, placeholder='Enter first name')
+            .row
+              .col-12.col-md-6.mb-3
+                label.form-label(for='first_name') First Name *
+                input.form-control(type='text', id='first_name', name='first_name', required)
               
-              .col-12.col-md-6
-                label.form-label(for='last_name')
-                  i.bi.bi-person.me-2
-                  | Last Name *
-                input.form-control(type='text', id='last_name', name='last_name', required, placeholder='Enter last name')
+              .col-12.col-md-6.mb-3
+                label.form-label(for='last_name') Last Name *
+                input.form-control(type='text', id='last_name', name='last_name', required)
               
-              .col-12.col-md-6
-                label.form-label(for='email_address')
-                  i.bi.bi-envelope.me-2
-                  | Email Address
-                input.form-control(type='email', id='email_address', name='email_address', placeholder='example@email.com')
+              .col-12.col-md-6.mb-3
+                label.form-label(for='email_address') Email Address
+                input.form-control(type='email', id='email_address', name='email_address')
               
-              .col-12.col-md-6
-                label.form-label(for='phone_number')
-                  i.bi.bi-telephone.me-2
-                  | Phone Number
-                input.form-control(type='text', id='phone_number', name='phone_number', placeholder='(555) 123-4567')
+              .col-12.col-md-6.mb-3
+                label.form-label(for='phone_number') Phone Number
+                input.form-control(type='text', id='phone_number', name='phone_number')
               
-              .col-12
-                hr.my-3
-                h5.text-primary
-                  i.bi.bi-geo-alt.me-2
-                  | Address Information
+              .col-12.mb-3
+                label.form-label(for='street') Street Address
+                input.form-control(type='text', id='street', name='street')
               
-              .col-12
-                label.form-label(for='street')
-                  i.bi.bi-house.me-2
-                  | Street Address
-                input.form-control(type='text', id='street', name='street', placeholder='123 Main Street')
+              .col-12.col-md-4.mb-3
+                label.form-label(for='city') City
+                input.form-control(type='text', id='city', name='city')
               
-              .col-12.col-md-4
-                label.form-label(for='city')
-                  i.bi.bi-building.me-2
-                  | City
-                input.form-control(type='text', id='city', name='city', placeholder='City')
+              .col-12.col-md-4.mb-3
+                label.form-label(for='state') State
+                input.form-control(type='text', id='state', name='state')
               
-              .col-12.col-md-4
-                label.form-label(for='state')
-                  i.bi.bi-map.me-2
-                  | State
-                input.form-control(type='text', id='state', name='state', placeholder='State')
+              .col-12.col-md-4.mb-3
+                label.form-label(for='zip') Zip Code
+                input.form-control(type='text', id='zip', name='zip')
               
-              .col-12.col-md-4
-                label.form-label(for='zip')
-                  i.bi.bi-mailbox.me-2
-                  | Zip Code
-                input.form-control(type='text', id='zip', name='zip', placeholder='12345')
+              .col-12.mb-3
+                label.form-label(for='country') Country
+                input.form-control(type='text', id='country', name='country')
+              
+              .col-12.mb-3
+                h5 Contact Preferences
+                .form-check.mb-2
+                  input.form-check-input(type='checkbox', id='contact_by_email', name='contact_by_email')
+                  label.form-check-label(for='contact_by_email') OK to contact by email
+                
+                .form-check
+                  input.form-check-input(type='checkbox', id='contact_by_phone', name='contact_by_phone')
+                  label.form-check-label(for='contact_by_phone') OK to contact by phone
               
               .col-12
-                label.form-label(for='country')
-                  i.bi.bi-globe.me-2
-                  | Country
-                input.form-control(type='text', id='country', name='country', placeholder='United States')
-              
-              .col-12
-                hr.my-3
-                h5.text-primary
-                  i.bi.bi-chat-dots.me-2
-                  | Contact Preferences
-              
-              .col-12
-                .row.g-3
-                  .col-12.col-md-6
-                    .form-check.p-3.border.rounded.bg-light
-                      input.form-check-input(type='checkbox', id='contact_by_email', name='contact_by_email')
-                      label.form-check-label(for='contact_by_email')
-                        i.bi.bi-envelope-check.text-success.me-2
-                        strong OK to contact by email
-                        br
-                        small.text-muted Allow email communications and updates
-                  
-                  .col-12.col-md-6
-                    .form-check.p-3.border.rounded.bg-light
-                      input.form-check-input(type='checkbox', id='contact_by_phone', name='contact_by_phone')
-                      label.form-check-label(for='contact_by_phone')
-                        i.bi.bi-telephone-check.text-info.me-2
-                        strong OK to contact by phone
-                        br
-                        small.text-muted Allow phone calls and text messages
-              
-              .col-12.mt-4
                 .d-flex.gap-2.justify-content-end
-                  a.btn.btn-outline-secondary(href='/')
-                    i.bi.bi-x-circle.me-2
-                    | Cancel
-                  button.btn.btn-primary(type='submit')
-                    i.bi.bi-check-circle.me-2
-                    | Add Contact
+                  a.btn.btn-outline-secondary(href='/') Cancel
+                  button.btn.btn-primary(type='submit') Add Contact
