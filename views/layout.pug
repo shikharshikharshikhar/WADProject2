@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title= title || 'Contact List App'
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/water.css@2/out/water.css')
+  body
+    nav
+      if user
+        p Welcome, #{user.first_name} #{user.last_name}!
+        form(action='/logout', method='post', style='display: inline;')
+          button(type='submit') Logout
+      else
+        a(href='/login') Login
+        | | 
+        a(href='/signup') Sign Up
+    
+    main
+      block content
