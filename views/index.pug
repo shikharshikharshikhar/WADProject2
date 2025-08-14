@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1 Contact List
+  
+  if user
+    a(href='/create') Add New Contact
+  
+  if contacts && contacts.length > 0
+    table
+      thead
+        tr
+          th Name
+          th Email
+          th Phone
+          th City
+          th Actions
+      tbody
+        each contact in contacts
+          tr(onclick=`window.location.href='/${contact.id}'`, style='cursor: pointer;')
+            td #{contact.first_name} #{contact.last_name}
+            td #{contact.email_address || 'N/A'}
+            td #{contact.phone_number || 'N/A'}
+            td #{contact.city || 'N/A'}
+            td
+              a(href=`/${contact.id}`) View
+  else
+    p No contacts found.
