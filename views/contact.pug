@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  h1 Contact Details
+  
+  .contact-details
+    h2 #{contact.first_name} #{contact.last_name}
+    
+    if contact.email_address
+      p 
+        strong Email: 
+        | #{contact.email_address}
+    
+    if contact.phone_number
+      p 
+        strong Phone: 
+        | #{contact.phone_number}
+    
+    if contact.street || contact.city || contact.state || contact.zip
+      p 
+        strong Address:
+        br
+        if contact.street
+          | #{contact.street}
+          br
+        if contact.city
+          | #{contact.city}
+          if contact.state
+            | , #{contact.state}
+          if contact.zip
+            |  #{contact.zip}
+          br
+        if contact.country
+          | #{contact.country}
+    
+    p 
+      strong Contact Preferences:
+    ul
+      li Email: #{contact.contact_by_email ? 'Yes' : 'No'}
+      li Phone: #{contact.contact_by_phone ? 'Yes' : 'No'}
+  
+  .actions
+    if user
+      a(href=`/${contact.id}/edit`) Edit Contact
+      | | 
+      a(href=`/${contact.id}/delete`) Delete Contact
+      | | 
+    a(href='/') Back to List
