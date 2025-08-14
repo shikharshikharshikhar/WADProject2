@@ -1,53 +1,56 @@
 extends layout
 
 block content
-  h1 Add New Contact
+  h1 Edit Contact
   
-  form(action='/create', method='post')
+  p Debug: Contact ID = #{contact.id}
+  p Debug: Form will post to: /#{contact.id}/edit
+  
+  form(action=`/${contact.id}/edit`, method='post')
     .form-group
       label(for='first_name') First Name:
-      input(type='text', id='first_name', name='first_name', required)
+      input(type='text', id='first_name', name='first_name', value=contact.first_name, required)
     
     .form-group
       label(for='last_name') Last Name:
-      input(type='text', id='last_name', name='last_name', required)
+      input(type='text', id='last_name', name='last_name', value=contact.last_name, required)
     
     .form-group
       label(for='email_address') Email Address:
-      input(type='email', id='email_address', name='email_address')
+      input(type='email', id='email_address', name='email_address', value=contact.email_address)
     
     .form-group
       label(for='phone_number') Phone Number:
-      input(type='text', id='phone_number', name='phone_number')
+      input(type='text', id='phone_number', name='phone_number', value=contact.phone_number)
     
     .form-group
       label(for='street') Street Address:
-      input(type='text', id='street', name='street')
+      input(type='text', id='street', name='street', value=contact.street)
     
     .form-group
       label(for='city') City:
-      input(type='text', id='city', name='city')
+      input(type='text', id='city', name='city', value=contact.city)
     
     .form-group
       label(for='state') State:
-      input(type='text', id='state', name='state')
+      input(type='text', id='state', name='state', value=contact.state)
     
     .form-group
       label(for='zip') Zip Code:
-      input(type='text', id='zip', name='zip')
+      input(type='text', id='zip', name='zip', value=contact.zip)
     
     .form-group
       label(for='country') Country:
-      input(type='text', id='country', name='country')
+      input(type='text', id='country', name='country', value=contact.country)
     
     .form-group
-      input(type='checkbox', id='contact_by_email', name='contact_by_email')
+      input(type='checkbox', id='contact_by_email', name='contact_by_email', checked=contact.contact_by_email)
       label(for='contact_by_email') OK to contact by email
     
     .form-group
-      input(type='checkbox', id='contact_by_phone', name='contact_by_phone')
+      input(type='checkbox', id='contact_by_phone', name='contact_by_phone', checked=contact.contact_by_phone)
       label(for='contact_by_phone') OK to contact by phone
     
-    button(type='submit') Add Contact
+    button(type='submit') Save Changes
     | 
-    a(href='/') Cancel
+    a(href=`/${contact.id}`) Cancel
