@@ -1,9 +1,12 @@
 const DB = require('dbcmps369');
 const bcrypt = require('bcryptjs');
+const path = require('path');
 
 class ContactDB {
   constructor() {
-    this.db = new DB('contacts.db');
+    // Set the database path - use environment variable or default to local file
+    const dbPath = process.env.DBPATH || path.join(__dirname, 'contacts.db');
+    this.db = new DB(dbPath);
   }
 
   async initialize() {
