@@ -3,28 +3,63 @@ extends layout
 block content
   .row.justify-content-center
     .col-12.col-lg-8
-      .card.shadow
+      .card
         .card-header.bg-warning.text-dark
-          h2.mb-0
-            i.bi.bi-pencil-square.me-2
-            | Edit Contact
+          h2.mb-0 Edit Contact
         
-        .card-body.p-4
+        .card-body
           form(action=`/${contact.id}/edit`, method='post')
-            .row.g-3
-              .col-12.col-md-6
-                label.form-label(for='first_name')
-                  i.bi.bi-person.me-2
-                  | First Name *
-                input.form-control(type='text', id='first_name', name='first_name', value=contact.first_name, required, placeholder='Enter first name')
+            .row
+              .col-12.col-md-6.mb-3
+                label.form-label(for='first_name') First Name *
+                input.form-control(type='text', id='first_name', name='first_name', value=contact.first_name, required)
               
-              .col-12.col-md-6
-                label.form-label(for='last_name')
-                  i.bi.bi-person.me-2
-                  | Last Name *
-                input.form-control(type='text', id='last_name', name='last_name', value=contact.last_name, required, placeholder='Enter last name')
+              .col-12.col-md-6.mb-3
+                label.form-label(for='last_name') Last Name *
+                input.form-control(type='text', id='last_name', name='last_name', value=contact.last_name, required)
               
-              .col-12.col-md-6
+              .col-12.col-md-6.mb-3
+                label.form-label(for='email_address') Email Address
+                input.form-control(type='email', id='email_address', name='email_address', value=contact.email_address)
+              
+              .col-12.col-md-6.mb-3
+                label.form-label(for='phone_number') Phone Number
+                input.form-control(type='text', id='phone_number', name='phone_number', value=contact.phone_number)
+              
+              .col-12.mb-3
+                label.form-label(for='street') Street Address
+                input.form-control(type='text', id='street', name='street', value=contact.street)
+              
+              .col-12.col-md-4.mb-3
+                label.form-label(for='city') City
+                input.form-control(type='text', id='city', name='city', value=contact.city)
+              
+              .col-12.col-md-4.mb-3
+                label.form-label(for='state') State
+                input.form-control(type='text', id='state', name='state', value=contact.state)
+              
+              .col-12.col-md-4.mb-3
+                label.form-label(for='zip') Zip Code
+                input.form-control(type='text', id='zip', name='zip', value=contact.zip)
+              
+              .col-12.mb-3
+                label.form-label(for='country') Country
+                input.form-control(type='text', id='country', name='country', value=contact.country)
+              
+              .col-12.mb-3
+                h5 Contact Preferences
+                .form-check.mb-2
+                  input.form-check-input(type='checkbox', id='contact_by_email', name='contact_by_email', checked=contact.contact_by_email)
+                  label.form-check-label(for='contact_by_email') OK to contact by email
+                
+                .form-check
+                  input.form-check-input(type='checkbox', id='contact_by_phone', name='contact_by_phone', checked=contact.contact_by_phone)
+                  label.form-check-label(for='contact_by_phone') OK to contact by phone
+              
+              .col-12
+                .d-flex.gap-2.justify-content-end
+                  a.btn.btn-outline-secondary(href=`/${contact.id}`) Cancel
+                  button.btn.btn-warning(type='submit') Save Changes
                 label.form-label(for='email_address')
                   i.bi.bi-envelope.me-2
                   | Email Address
