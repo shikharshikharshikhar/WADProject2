@@ -61,6 +61,7 @@ router.get('/:id/edit', requireAuth, async (req, res) => {
     if (!contact) {
       return res.status(404).send('Contact not found');
     }
+    console.log('Contact data for edit form:', contact);
     res.render('edit', { contact });
   } catch (error) {
     console.error('Error fetching contact:', error);
@@ -71,20 +72,27 @@ router.get('/:id/edit', requireAuth, async (req, res) => {
 // Edit contact POST - MUST come before /:id route
 router.post('/:id/edit', requireAuth, async (req, res) => {
   try {
+    console.log('Form data received:', req.body);
+    
+    // Get the current contact first
+    const currentContact = await req.db.getContactById(req.params.id);
+    console.log('Current contact in DB:', currentContact);
+    
     const contactData = {
-      first_name: req.body.first_name || '',
-      last_name: req.body.last_name || '',
-      phone_number: req.body.phone_number || '',
-      email_address: req.body.email_address || '',
-      street: req.body.street || '',
-      city: req.body.city || '',
-      state: req.body.state || '',
-      zip: req.body.zip || '',
-      country: req.body.country || '',
+      first_name: req.body.first_name || currentContact.first_name || '',
+      last_name: req.body.last_name || currentContact.last_name || '',
+      phone_number: req.body.phone_number || currentContact.phone_number || '',
+      email_address: req.body.email_address || currentContact.email_address || '',
+      street: req.body.street || currentContact.street || '',
+      city: req.body.city || currentContact.city || '',
+      state: req.body.state || currentContact.state || '',
+      zip: req.body.zip || currentContact.zip || '',
+      country: req.body.country || currentContact.country || '',
       contact_by_email: req.body.contact_by_email !== undefined,
       contact_by_phone: req.body.contact_by_phone !== undefined
     };
 
+    console.log('Data to update:', contactData);
     await req.db.updateContact(req.params.id, contactData);
     res.redirect(`/${req.params.id}`);
   } catch (error) {
