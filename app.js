@@ -3,6 +3,11 @@ const session = require('express-session');
 const ContactDB = require('./ContactDB');
 const path = require('path');
 
+// Set DBPATH environment variable if not already set
+if (!process.env.DBPATH) {
+  process.env.DBPATH = path.join(__dirname, 'contacts.db');
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
