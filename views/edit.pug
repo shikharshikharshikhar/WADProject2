@@ -2,9 +2,7 @@ extends layout
 
 block content
   h1 Edit Contact
-  
-  p Debug: Contact ID = #{contact.id}
-  p Debug: Form will post to: /#{contact.id}/edit
+
   
   form(action=`/${contact.id}/edit`, method='post')
     .form-group
