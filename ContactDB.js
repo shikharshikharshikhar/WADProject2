@@ -10,7 +10,8 @@ class ContactDB {
   }
 
   async initialize() {
-    await this.db.query(`
+    // Create contacts table
+    await this.db.exec(`
       CREATE TABLE IF NOT EXISTS contacts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         first_name TEXT NOT NULL,
@@ -27,7 +28,8 @@ class ContactDB {
       )
     `);
 
-    await this.db.query(`
+    // Create users table
+    await this.db.exec(`
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         first_name TEXT NOT NULL,
@@ -51,16 +53,15 @@ class ContactDB {
 
   // Contact methods
   async getAllContacts() {
-    return await this.db.query('SELECT * FROM contacts ORDER BY last_name, first_name');
+    return await this.db.all('SELECT * FROM contacts ORDER BY last_name, first_name');
   }
 
   async getContactById(id) {
-    const contacts = await this.db.query('SELECT * FROM contacts WHERE id = ?', [id]);
-    return contacts[0] || null;
+    return await this.db.get('SELECT * FROM contacts WHERE id = ?', [id]);
   }
 
   async createContact(contact) {
-    const result = await this.db.query(`
+    const result = await this.db.run(`
       INSERT INTO contacts 
       (first_name, last_name, phone_number, email_address, street, city, state, zip, country, contact_by_email, contact_by_phone)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -77,11 +78,11 @@ class ContactDB {
       contact.contact_by_email ? 1 : 0,
       contact.contact_by_phone ? 1 : 0
     ]);
-    return result.lastInsertRowid;
+    return result.lastID;
   }
 
   async updateContact(id, contact) {
-    await this.db.query(`
+    await this.db.run(`
       UPDATE contacts SET
       first_name = ?, last_name = ?, phone_number = ?, email_address = ?,
       street = ?, city = ?, state = ?, zip = ?, country = ?,
@@ -104,25 +105,23 @@ class ContactDB {
   }
 
   async deleteContact(id) {
-    await this.db.query('DELETE FROM contacts WHERE id = ?', [id]);
+    await this.db.run('DELETE FROM contacts WHERE id = ?', [id]);
   }
 
   // User methods
   async getUserByUsername(username) {
-    const users = await this.db.query('SELECT * FROM users WHERE username = ?', [username]);
-    return users[0] || null;
+    return await this.db.get('SELECT * FROM users WHERE username = ?', [username]);
   }
 
   async getUserById(id) {
-    const users = await this.db.query('SELECT * FROM users WHERE id = ?', [id]);
-    return users[0] || null;
+    return await this.db.get('SELECT * FROM users WHERE id = ?', [id]);
   }
 
   async createUser(user) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
     
-    const result = await this.db.query(`
+    const result = await this.db.run(`
       INSERT INTO users (first_name, last_name, username, password)
       VALUES (?, ?, ?, ?)
     `, [
@@ -131,7 +130,7 @@ class ContactDB {
       user.username,
       hashedPassword
     ]);
-    return result.lastInsertRowid;
+    return result.lastID;
   }
 
   async validateUser(username, password) {
