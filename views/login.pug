@@ -3,36 +3,26 @@ extends layout
 block content
   .row.justify-content-center
     .col-12.col-md-6.col-lg-4
-      .card.shadow
+      .card
         .card-header.bg-primary.text-white.text-center
-          h2.mb-0
-            i.bi.bi-box-arrow-in-right.me-2
-            | Login
+          h2.mb-0 Login
         
-        .card-body.p-4
+        .card-body
           if error
-            .alert.alert-danger
-              i.bi.bi-exclamation-triangle.me-2
-              | #{error}
+            .alert.alert-danger #{error}
           
           form(action='/login', method='post')
             .mb-3
-              label.form-label(for='username')
-                i.bi.bi-person.me-2
-                | Username
-              input.form-control.form-control-lg(type='text', id='username', name='username', required, placeholder='Enter your username')
+              label.form-label(for='username') Username
+              input.form-control(type='text', id='username', name='username', required)
             
-            .mb-4
-              label.form-label(for='password')
-                i.bi.bi-lock.me-2
-                | Password
-              input.form-control.form-control-lg(type='password', id='password', name='password', required, placeholder='Enter your password')
+            .mb-3
+              label.form-label(for='password') Password
+              input.form-control(type='password', id='password', name='password', required)
             
-            button.btn.btn-primary.btn-lg.w-100(type='submit')
-              i.bi.bi-box-arrow-in-right.me-2
-              | Login
+            button.btn.btn-primary.w-100(type='submit') Login
         
-        .card-footer.bg-light.text-center
+        .card-footer.text-center
           p.mb-0.text-muted
             | Don't have an account? 
-            a.text-decoration-none(href='/signup') Sign up here
+            a(href='/signup') Sign up here
