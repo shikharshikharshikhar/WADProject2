@@ -1,19 +1,24 @@
-const DB = require('dbcmps369');
+const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const path = require('path');
+const { promisify } = require('util');
 
 class ContactDB {
   constructor() {
     // Set the database path - use environment variable or default to local file
     const dbPath = process.env.DBPATH || path.join(__dirname, 'contacts.db');
-    this.db = new DB(dbPath);
+    this.db = new sqlite3.Database(dbPath);
+    
+    // Promisify the database methods for async/await usage
+    this.db.runAsync = promisify(this.db.run.bind(this.db));
+    this.db.getAsync = promisify(this.db.get.bind(this.db));
+    this.db.allAsync = promisify(this.db.all.bind(this.db));
+    this.db.execAsync = promisify(this.db.exec.bind(this.db));
   }
 
   async initialize() {
     // Create contacts table
-    console.log('Available methods:', Object.getOwnPropertyNames(this.db));
-    console.log('DB instance:', this.db);
-    await this.db.exec(`
+    await this.db.execAsync(`
       CREATE TABLE IF NOT EXISTS contacts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         first_name TEXT NOT NULL,
@@ -31,7 +36,7 @@ class ContactDB {
     `);
 
     // Create users table
-    await this.db.exec(`
+    await this.db.execAsync(`
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         first_name TEXT NOT NULL,
@@ -55,15 +60,15 @@ class ContactDB {
 
   // Contact methods
   async getAllContacts() {
-    return await this.db.all('SELECT * FROM contacts ORDER BY last_name, first_name');
+    return await this.db.allAsync('SELECT * FROM contacts ORDER BY last_name, first_name');
   }
 
   async getContactById(id) {
-    return await this.db.get('SELECT * FROM contacts WHERE id = ?', [id]);
+    return await this.db.getAsync('SELECT * FROM contacts WHERE id = ?', [id]);
   }
 
   async createContact(contact) {
-    const result = await this.db.run(`
+    const result = await this.db.runAsync(`
       INSERT INTO contacts 
       (first_name, last_name, phone_number, email_address, street, city, state, zip, country, contact_by_email, contact_by_phone)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -84,7 +89,7 @@ class ContactDB {
   }
 
   async updateContact(id, contact) {
-    await this.db.run(`
+    await this.db.runAsync(`
       UPDATE contacts SET
       first_name = ?, last_name = ?, phone_number = ?, email_address = ?,
       street = ?, city = ?, state = ?, zip = ?, country = ?,
@@ -107,23 +112,23 @@ class ContactDB {
   }
 
   async deleteContact(id) {
-    await this.db.run('DELETE FROM contacts WHERE id = ?', [id]);
+    await this.db.runAsync('DELETE FROM contacts WHERE id = ?', [id]);
   }
 
   // User methods
   async getUserByUsername(username) {
-    return await this.db.get('SELECT * FROM users WHERE username = ?', [username]);
+    return await this.db.getAsync('SELECT * FROM users WHERE username = ?', [username]);
   }
 
   async getUserById(id) {
-    return await this.db.get('SELECT * FROM users WHERE id = ?', [id]);
+    return await this.db.getAsync('SELECT * FROM users WHERE id = ?', [id]);
   }
 
   async createUser(user) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
     
-    const result = await this.db.run(`
+    const result = await this.db.runAsync(`
       INSERT INTO users (first_name, last_name, username, password)
       VALUES (?, ?, ?, ?)
     `, [
@@ -141,6 +146,16 @@ class ContactDB {
 
     const isValid = await bcrypt.compare(password, user.password);
     return isValid ? user : null;
+  }
+
+  // Close database connection
+  close() {
+    return new Promise((resolve, reject) => {
+      this.db.close((err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
   }
 }
 
