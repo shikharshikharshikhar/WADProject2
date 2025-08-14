@@ -3,56 +3,44 @@ extends layout
 block content
   .row.justify-content-center
     .col-12.col-md-8.col-lg-6
-      .card.shadow.border-danger
+      .card.border-danger
         .card-header.bg-danger.text-white
-          h2.mb-0
-            i.bi.bi-exclamation-triangle.me-2
-            | Confirm Deletion
+          h2.mb-0 Confirm Deletion
         
-        .card-body.p-4.text-center
+        .card-body.text-center
           .mb-4
-            i.bi.bi-person-x.text-danger(style='font-size: 4rem;')
+            i.bi.bi-exclamation-triangle.text-danger(style='font-size: 3rem;')
           
           h4.mb-3 Are you sure you want to delete this contact?
           
           .alert.alert-warning.text-start
-            h5.alert-heading
-              i.bi.bi-person-circle.me-2
-              | #{contact.first_name} #{contact.last_name}
+            h5 #{contact.first_name} #{contact.last_name}
             
             if contact.email_address
               p.mb-1
-                i.bi.bi-envelope.me-2
                 strong Email: 
                 | #{contact.email_address}
             
             if contact.phone_number
               p.mb-1
-                i.bi.bi-telephone.me-2
                 strong Phone: 
                 | #{contact.phone_number}
             
             if contact.city || contact.state
               p.mb-0
-                i.bi.bi-geo-alt.me-2
                 strong Location: 
                 | #{contact.city}#{contact.state ? ', ' + contact.state : ''}
           
           .alert.alert-danger
-            i.bi.bi-exclamation-triangle.me-2
             strong Warning: 
             | This action cannot be undone!
         
-        .card-footer.bg-light
+        .card-footer
           .d-flex.gap-3.justify-content-center
-            a.btn.btn-outline-secondary.btn-lg(href=`/${contact.id}`)
-              i.bi.bi-x-circle.me-2
-              | Cancel
+            a.btn.btn-outline-secondary(href=`/${contact.id}`) Cancel
             
             form.d-inline(action=`/${contact.id}/delete`, method='post')
-              button.btn.btn-danger.btn-lg(type='submit')
-                i.bi.bi-trash.me-2
-                | Yes, Delete Contactextends layout
+              button.btn.btn-danger(type='submit') Yes, Delete Contactextends layout
 
 block content
   h1 Delete Contact
