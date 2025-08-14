@@ -12,39 +12,39 @@ block content
             .row
               .col-12.col-md-6.mb-3
                 label.form-label(for='first_name') First Name *
-                input.form-control(type='text', id='first_name', name='first_name', value=contact.first_name, required)
+                input.form-control(type='text', id='first_name', name='first_name', value=(contact.first_name || ''), required)
               
               .col-12.col-md-6.mb-3
                 label.form-label(for='last_name') Last Name *
-                input.form-control(type='text', id='last_name', name='last_name', value=contact.last_name, required)
+                input.form-control(type='text', id='last_name', name='last_name', value=(contact.last_name || ''), required)
               
               .col-12.col-md-6.mb-3
                 label.form-label(for='email_address') Email Address
-                input.form-control(type='email', id='email_address', name='email_address', value=contact.email_address)
+                input.form-control(type='email', id='email_address', name='email_address', value=(contact.email_address || ''))
               
               .col-12.col-md-6.mb-3
                 label.form-label(for='phone_number') Phone Number
-                input.form-control(type='text', id='phone_number', name='phone_number', value=contact.phone_number)
+                input.form-control(type='text', id='phone_number', name='phone_number', value=(contact.phone_number || ''))
               
               .col-12.mb-3
                 label.form-label(for='street') Street Address
-                input.form-control(type='text', id='street', name='street', value=contact.street)
+                input.form-control(type='text', id='street', name='street', value=(contact.street || ''))
               
               .col-12.col-md-4.mb-3
                 label.form-label(for='city') City
-                input.form-control(type='text', id='city', name='city', value=contact.city)
+                input.form-control(type='text', id='city', name='city', value=(contact.city || ''))
               
               .col-12.col-md-4.mb-3
                 label.form-label(for='state') State
-                input.form-control(type='text', id='state', name='state', value=contact.state)
+                input.form-control(type='text', id='state', name='state', value=(contact.state || ''))
               
               .col-12.col-md-4.mb-3
                 label.form-label(for='zip') Zip Code
-                input.form-control(type='text', id='zip', name='zip', value=contact.zip)
+                input.form-control(type='text', id='zip', name='zip', value=(contact.zip || ''))
               
               .col-12.mb-3
                 label.form-label(for='country') Country
-                input.form-control(type='text', id='country', name='country', value=contact.country)
+                input.form-control(type='text', id='country', name='country', value=(contact.country || ''))
               
               .col-12.mb-3
                 h5 Contact Preferences
