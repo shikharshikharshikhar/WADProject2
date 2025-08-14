@@ -1,21 +1,38 @@
 extends layout
 
 block content
-  h1 Login
-  
-  if error
-    .error #{error}
-  
-  form(action='/login', method='post')
-    .form-group
-      label(for='username') Username:
-      input(type='text', id='username', name='username', required)
-    
-    .form-group
-      label(for='password') Password:
-      input(type='password', id='password', name='password', required)
-    
-    button(type='submit') Login
-  
-  p Don't have an account? 
-    a(href='/signup') Sign up here
+  .row.justify-content-center
+    .col-12.col-md-6.col-lg-4
+      .card.shadow
+        .card-header.bg-primary.text-white.text-center
+          h2.mb-0
+            i.bi.bi-box-arrow-in-right.me-2
+            | Login
+        
+        .card-body.p-4
+          if error
+            .alert.alert-danger
+              i.bi.bi-exclamation-triangle.me-2
+              | #{error}
+          
+          form(action='/login', method='post')
+            .mb-3
+              label.form-label(for='username')
+                i.bi.bi-person.me-2
+                | Username
+              input.form-control.form-control-lg(type='text', id='username', name='username', required, placeholder='Enter your username')
+            
+            .mb-4
+              label.form-label(for='password')
+                i.bi.bi-lock.me-2
+                | Password
+              input.form-control.form-control-lg(type='password', id='password', name='password', required, placeholder='Enter your password')
+            
+            button.btn.btn-primary.btn-lg.w-100(type='submit')
+              i.bi.bi-box-arrow-in-right.me-2
+              | Login
+        
+        .card-footer.bg-light.text-center
+          p.mb-0.text-muted
+            | Don't have an account? 
+            a.text-decoration-none(href='/signup') Sign up here
