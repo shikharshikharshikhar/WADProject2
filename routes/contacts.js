@@ -25,23 +25,40 @@ router.get('/', async (req, res) => {
 });
 
 // Create contact form - MUST come before /:id routes
-router.get('/create', requireAuth, (req, res) => {
-  res.render('create');
+router.get('/create', requireAuth, async (req, res) => {
+  try {
+    console.log('=== CREATE PAGE GET ===');
+    console.log('Session userId:', req.session.userId);
+    const user = await req.db.getUserById(req.session.userId);
+    console.log('User data for create page:', user);
+    res.render('create', { user });
+  } catch (error) {
+    console.error('Error fetching user for create page:', error);
+    res.render('create', { user: null });
+  }
 });
 
 // Create contact POST - MUST come before /:id routes
 router.post('/create', requireAuth, async (req, res) => {
   try {
+    // Helper function to extract first value if it's an array
+    const getValue = (field) => {
+      if (Array.isArray(field)) {
+        return field[0] || '';
+      }
+      return field || '';
+    };
+
     const contactData = {
-      first_name: req.body.first_name || '',
-      last_name: req.body.last_name || '',
-      phone_number: req.body.phone_number || '',
-      email_address: req.body.email_address || '',
-      street: req.body.street || '',
-      city: req.body.city || '',
-      state: req.body.state || '',
-      zip: req.body.zip || '',
-      country: req.body.country || '',
+      first_name: getValue(req.body.first_name),
+      last_name: getValue(req.body.last_name),
+      phone_number: getValue(req.body.phone_number),
+      email_address: getValue(req.body.email_address),
+      street: getValue(req.body.street),
+      city: getValue(req.body.city),
+      state: getValue(req.body.state),
+      zip: getValue(req.body.zip),
+      country: getValue(req.body.country),
       contact_by_email: req.body.contact_by_email !== undefined,
       contact_by_phone: req.body.contact_by_phone !== undefined
     };
@@ -57,14 +74,22 @@ router.post('/create', requireAuth, async (req, res) => {
 // Edit contact form - MUST come before /:id route
 router.get('/:id/edit', requireAuth, async (req, res) => {
   try {
+    console.log('=== EDIT PAGE GET ===');
+    console.log('Contact ID:', req.params.id);
+    console.log('Session userId:', req.session.userId);
+    
     const contact = await req.db.getContactById(req.params.id);
     if (!contact) {
       return res.status(404).send('Contact not found');
     }
-    console.log('Contact data for edit form:', contact);
-    res.render('edit', { contact });
+    
+    const user = await req.db.getUserById(req.session.userId);
+    console.log('User data for edit page:', user);
+    console.log('Contact data for edit page:', contact);
+    
+    res.render('edit', { contact, user });
   } catch (error) {
-    console.error('Error fetching contact:', error);
+    console.error('Error fetching contact or user for edit page:', error);
     res.status(500).send('Server error');
   }
 });
@@ -72,6 +97,7 @@ router.get('/:id/edit', requireAuth, async (req, res) => {
 // Edit contact POST - MUST come before /:id route
 router.post('/:id/edit', requireAuth, async (req, res) => {
   try {
+    console.log('=== EDIT POST ===');
     console.log('Form data received:', req.body);
     
     // Helper function to extract first value if it's an array
@@ -108,13 +134,22 @@ router.post('/:id/edit', requireAuth, async (req, res) => {
 // Delete confirmation - MUST come before /:id route
 router.get('/:id/delete', requireAuth, async (req, res) => {
   try {
+    console.log('=== DELETE PAGE GET ===');
+    console.log('Contact ID:', req.params.id);
+    console.log('Session userId:', req.session.userId);
+    
     const contact = await req.db.getContactById(req.params.id);
     if (!contact) {
       return res.status(404).send('Contact not found');
     }
-    res.render('delete', { contact });
+    
+    const user = await req.db.getUserById(req.session.userId);
+    console.log('User data for delete page:', user);
+    console.log('Contact data for delete page:', contact);
+    
+    res.render('delete', { contact, user });
   } catch (error) {
-    console.error('Error fetching contact:', error);
+    console.error('Error fetching contact or user for delete page:', error);
     res.status(500).send('Server error');
   }
 });
