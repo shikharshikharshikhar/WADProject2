@@ -31,12 +31,12 @@ app.use((req, res, next) => {
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// Routes
-const contactRoutes = require('./routes/contacts');
+// Routes - ORDER MATTERS! Specific routes must come before dynamic routes
 const authRoutes = require('./routes/auth');
+const contactRoutes = require('./routes/contacts');
 
-app.use('/', contactRoutes);
 app.use('/', authRoutes);
+app.use('/', contactRoutes);
 
 // Initialize database and start server
 db.initialize().then(() => {
