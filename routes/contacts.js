@@ -24,12 +24,12 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Create contact form
+// Create contact form - MUST come before /:id routes
 router.get('/create', requireAuth, (req, res) => {
   res.render('create');
 });
 
-// Create contact POST
+// Create contact POST - MUST come before /:id routes
 router.post('/create', requireAuth, async (req, res) => {
   try {
     const contactData = {
@@ -54,24 +54,7 @@ router.post('/create', requireAuth, async (req, res) => {
   }
 });
 
-// View specific contact
-router.get('/:id', async (req, res) => {
-  try {
-    const contact = await req.db.getContactById(req.params.id);
-    if (!contact) {
-      return res.status(404).send('Contact not found');
-    }
-    res.render('contact', { 
-      contact,
-      user: req.session.userId ? await req.db.getUserById(req.session.userId) : null
-    });
-  } catch (error) {
-    console.error('Error fetching contact:', error);
-    res.status(500).send('Server error');
-  }
-});
-
-// Edit contact form
+// Edit contact form - MUST come before /:id route
 router.get('/:id/edit', requireAuth, async (req, res) => {
   try {
     const contact = await req.db.getContactById(req.params.id);
@@ -85,7 +68,7 @@ router.get('/:id/edit', requireAuth, async (req, res) => {
   }
 });
 
-// Edit contact POST
+// Edit contact POST - MUST come before /:id route
 router.post('/:id/edit', requireAuth, async (req, res) => {
   try {
     const contactData = {
@@ -110,7 +93,7 @@ router.post('/:id/edit', requireAuth, async (req, res) => {
   }
 });
 
-// Delete confirmation
+// Delete confirmation - MUST come before /:id route
 router.get('/:id/delete', requireAuth, async (req, res) => {
   try {
     const contact = await req.db.getContactById(req.params.id);
@@ -124,13 +107,30 @@ router.get('/:id/delete', requireAuth, async (req, res) => {
   }
 });
 
-// Delete contact POST
+// Delete contact POST - MUST come before /:id route
 router.post('/:id/delete', requireAuth, async (req, res) => {
   try {
     await req.db.deleteContact(req.params.id);
     res.redirect('/');
   } catch (error) {
     console.error('Error deleting contact:', error);
+    res.status(500).send('Server error');
+  }
+});
+
+// View specific contact - MUST come LAST among /:id routes
+router.get('/:id', async (req, res) => {
+  try {
+    const contact = await req.db.getContactById(req.params.id);
+    if (!contact) {
+      return res.status(404).send('Contact not found');
+    }
+    res.render('contact', { 
+      contact,
+      user: req.session.userId ? await req.db.getUserById(req.session.userId) : null
+    });
+  } catch (error) {
+    console.error('Error fetching contact:', error);
     res.status(500).send('Server error');
   }
 });
