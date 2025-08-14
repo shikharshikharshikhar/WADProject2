@@ -3,56 +3,40 @@ extends layout
 block content
   .row.justify-content-center
     .col-12.col-md-8.col-lg-6
-      .card.shadow
+      .card
         .card-header.bg-success.text-white.text-center
-          h2.mb-0
-            i.bi.bi-person-plus.me-2
-            | Create Account
+          h2.mb-0 Create Account
         
-        .card-body.p-4
+        .card-body
           if error
-            .alert.alert-danger
-              i.bi.bi-exclamation-triangle.me-2
-              | #{error}
+            .alert.alert-danger #{error}
           
           form(action='/signup', method='post')
-            .row.g-3
-              .col-12.col-md-6
-                label.form-label(for='first_name')
-                  i.bi.bi-person.me-2
-                  | First Name
-                input.form-control(type='text', id='first_name', name='first_name', required, placeholder='Enter first name')
+            .row
+              .col-12.col-md-6.mb-3
+                label.form-label(for='first_name') First Name
+                input.form-control(type='text', id='first_name', name='first_name', required)
               
-              .col-12.col-md-6
-                label.form-label(for='last_name')
-                  i.bi.bi-person.me-2
-                  | Last Name
-                input.form-control(type='text', id='last_name', name='last_name', required, placeholder='Enter last name')
+              .col-12.col-md-6.mb-3
+                label.form-label(for='last_name') Last Name
+                input.form-control(type='text', id='last_name', name='last_name', required)
               
-              .col-12
-                label.form-label(for='username')
-                  i.bi.bi-at.me-2
-                  | Username
-                input.form-control(type='text', id='username', name='username', required, placeholder='Choose a username')
+              .col-12.mb-3
+                label.form-label(for='username') Username
+                input.form-control(type='text', id='username', name='username', required)
               
-              .col-12
-                label.form-label(for='password')
-                  i.bi.bi-lock.me-2
-                  | Password
-                input.form-control(type='password', id='password', name='password', required, placeholder='Create a password')
+              .col-12.mb-3
+                label.form-label(for='password') Password
+                input.form-control(type='password', id='password', name='password', required)
+              
+              .col-12.mb-3
+                label.form-label(for='confirm_password') Confirm Password
+                input.form-control(type='password', id='confirm_password', name='confirm_password', required)
               
               .col-12
-                label.form-label(for='confirm_password')
-                  i.bi.bi-lock-fill.me-2
-                  | Confirm Password
-                input.form-control(type='password', id='confirm_password', name='confirm_password', required, placeholder='Confirm your password')
-              
-              .col-12.mt-4
-                button.btn.btn-success.btn-lg.w-100(type='submit')
-                  i.bi.bi-person-plus.me-2
-                  | Create Account
+                button.btn.btn-success.w-100(type='submit') Create Account
         
-        .card-footer.bg-light.text-center
+        .card-footer.text-center
           p.mb-0.text-muted
             | Already have an account? 
-            a.text-decoration-none(href='/login') Login here
+            a(href='/login') Login here
