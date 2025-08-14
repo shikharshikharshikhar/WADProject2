@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 const db = new ContactDB();
 
 // Middleware
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false })); // Changed to false to prevent array conversion
 app.use(express.json());
 
 // Session configuration
