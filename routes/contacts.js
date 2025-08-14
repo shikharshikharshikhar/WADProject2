@@ -33,15 +33,15 @@ router.get('/create', requireAuth, (req, res) => {
 router.post('/create', requireAuth, async (req, res) => {
   try {
     const contactData = {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      phone_number: req.body.phone_number,
-      email_address: req.body.email_address,
-      street: req.body.street,
-      city: req.body.city,
-      state: req.body.state,
-      zip: req.body.zip,
-      country: req.body.country,
+      first_name: req.body.first_name || '',
+      last_name: req.body.last_name || '',
+      phone_number: req.body.phone_number || '',
+      email_address: req.body.email_address || '',
+      street: req.body.street || '',
+      city: req.body.city || '',
+      state: req.body.state || '',
+      zip: req.body.zip || '',
+      country: req.body.country || '',
       contact_by_email: req.body.contact_by_email !== undefined,
       contact_by_phone: req.body.contact_by_phone !== undefined
     };
