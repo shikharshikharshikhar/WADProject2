@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1 Sign Up
+  
+  if error
+    .error #{error}
+  
+  form(action='/signup', method='post')
+    .form-group
+      label(for='first_name') First Name:
+      input(type='text', id='first_name', name='first_name', required)
+    
+    .form-group
+      label(for='last_name') Last Name:
+      input(type='text', id='last_name', name='last_name', required)
+    
+    .form-group
+      label(for='username') Username:
+      input(type='text', id='username', name='username', required)
+    
+    .form-group
+      label(for='password') Password:
+      input(type='password', id='password', name='password', required)
+    
+    .form-group
+      label(for='confirm_password') Confirm Password:
+      input(type='password', id='confirm_password', name='confirm_password', required)
+    
+    button(type='submit') Sign Up
+  
+  p Already have an account? 
+    a(href='/login') Login here
