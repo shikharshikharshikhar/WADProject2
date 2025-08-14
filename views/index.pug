@@ -1,28 +1,76 @@
 extends layout
 
 block content
-  h1 Contact List
-  
-  if user
-    a(href='/create') Add New Contact
+  .d-flex.justify-content-between.align-items-center.mb-4
+    h1.mb-0
+      i.bi.bi-people.me-2
+      | Contact Directory
+    if user
+      a.btn.btn-primary(href='/create')
+        i.bi.bi-person-plus.me-2
+        | Add New Contact
   
   if contacts && contacts.length > 0
-    table
-      thead
-        tr
-          th Name
-          th Email
-          th Phone
-          th City
-          th Actions
-      tbody
-        each contact in contacts
-          tr(onclick=`window.location.href='/${contact.id}'`, style='cursor: pointer;')
-            td #{contact.first_name} #{contact.last_name}
-            td #{contact.email_address || 'N/A'}
-            td #{contact.phone_number || 'N/A'}
-            td #{contact.city || 'N/A'}
-            td
-              a(href=`/${contact.id}`) View
+    .row.g-3
+      each contact in contacts
+        .col-12.col-md-6.col-lg-4
+          .card.contact-card(onclick=`window.location.href='/${contact.id}'`)
+            .card-body
+              .d-flex.justify-content-between.align-items-start.mb-2
+                h5.card-title.mb-1 #{contact.first_name} #{contact.last_name}
+                .dropdown
+                  button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button', data-bs-toggle='dropdown', onclick='event.stopPropagation();')
+                    i.bi.bi-three-dots
+                  ul.dropdown-menu
+                    li
+                      a.dropdown-item(href=`/${contact.id}`, onclick='event.stopPropagation();')
+                        i.bi.bi-eye.me-2
+                        | View
+                    if user
+                      li
+                        a.dropdown-item(href=`/${contact.id}/edit`, onclick='event.stopPropagation();')
+                          i.bi.bi-pencil.me-2
+                          | Edit
+                      li
+                        hr.dropdown-divider
+                      li
+                        a.dropdown-item.text-danger(href=`/${contact.id}/delete`, onclick='event.stopPropagation();')
+                          i.bi.bi-trash.me-2
+                          | Delete
+              
+              if contact.email_address
+                p.card-text.mb-1
+                  i.bi.bi-envelope.text-muted.me-2
+                  small #{contact.email_address}
+              
+              if contact.phone_number
+                p.card-text.mb-1
+                  i.bi.bi-telephone.text-muted.me-2
+                  small #{contact.phone_number}
+              
+              if contact.city
+                p.card-text.mb-2
+                  i.bi.bi-geo-alt.text-muted.me-2
+                  small #{contact.city}#{contact.state ? ', ' + contact.state : ''}
+              
+              .d-flex.gap-1
+                if contact.contact_by_email
+                  span.badge.badge-email
+                    i.bi.bi-envelope-check.me-1
+                    | Email OK
+                if contact.contact_by_phone
+                  span.badge.badge-phone
+                    i.bi.bi-telephone-check.me-1
+                    | Phone OK
   else
-    p No contacts found.
+    .text-center.py-5
+      .mb-4
+        i.bi.bi-person-x.text-muted(style='font-size: 4rem;')
+      h3.text-muted No contacts found
+      p.text-muted.mb-4 Get started by adding your first contact
+      if user
+        a.btn.btn-primary.btn-lg(href='/create')
+          i.bi.bi-person-plus.me-2
+          | Add Your First Contact
+      else
+        p.text-muted Please log in to add contacts
