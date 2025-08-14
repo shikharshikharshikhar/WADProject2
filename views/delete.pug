@@ -1,6 +1,26 @@
 extends layout
 
 block content
+  .row.justify-content-center
+    .col-12.col-md-8.col-lg-6
+      .card.shadow.border-danger
+        .card-header.bg-danger.text-white
+          h2.mb-0
+            i.bi.bi-exclamation-triangle.me-2
+            | Confirm Deletion
+        
+        .card-body.p-4.text-center
+          .mb-4
+            i.bi.bi-person-x.text-danger(style='font-size: 4rem;')
+          
+          h4.mb-3 Are you sure you want to delete this contact?
+          
+          .alert.alert-warning.text-start
+            h5.alert-heading
+              i.bi.bi-person-circle.me-2
+              | #{contactextends layout
+
+block content
   h1 Delete Contact
   
   p Are you sure you want to delete the following contact?
